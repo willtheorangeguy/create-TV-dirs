@@ -4,8 +4,124 @@ import shutil
 import unittest
 import subprocess
 import sys
+from tv_organizer.__main__ import get_organization_plan
+
+class TestGetOrganizationPlan(unittest.TestCase):
+    """Unit tests for the get_organization_plan function."""
+
+    def setUp(self):
+        """Set up a temporary directory and dummy files for testing."""
+        self.test_dir = "temp_unit_test_dir"
+        if os.path.exists(self.test_dir):
+            shutil.rmtree(self.test_dir)
+        os.makedirs(self.test_dir)
+
+    def tearDown(self):
+        """Remove the temporary directory after tests are done."""
+        if os.path.exists(self.test_dir):
+            shutil.rmtree(self.test_dir)
+
+    def test_nonexistent_directory(self):
+        """Test that non-existent directories are handled correctly."""
+        actions, error = get_organization_plan("/nonexistent/path")
+        self.assertIsNone(actions)
+        self.assertIn("Directory not found", error)
+
+    def test_empty_directory(self):
+        """Test that empty directories are handled correctly."""
+        actions, error = get_organization_plan(self.test_dir)
+        self.assertIsNone(actions)
+        self.assertIn("No files to organize", error)
+
+    def test_no_matching_files(self):
+        """Test that directories with no matching files are handled correctly."""
+        # Create files without season format
+        with open(os.path.join(self.test_dir, "random_file.txt"), "w") as f:
+            f.write("content")
+        with open(os.path.join(self.test_dir, "another.mp4"), "w") as f:
+            f.write("content")
+        
+        actions, error = get_organization_plan(self.test_dir)
+        self.assertIsNone(actions)
+        self.assertIn("No files with the expected season format", error)
+
+    def test_single_season(self):
+        """Test organizing files from a single season."""
+        files = [
+            "Show.01x01.mkv",
+            "Show.01x02.mkv",
+            "Show.01x03.mkv"
+        ]
+        for filename in files:
+            with open(os.path.join(self.test_dir, filename), "w") as f:
+                f.write("content")
+        
+        actions, error = get_organization_plan(self.test_dir)
+        self.assertIsNone(error)
+        self.assertIsNotNone(actions)
+        self.assertIn("Season 01", actions)
+        self.assertEqual(len(actions["Season 01"]), 3)
+
+    def test_multiple_seasons(self):
+        """Test organizing files from multiple seasons."""
+        files = [
+            "Show.01x01.mkv",
+            "Show.01x02.mkv",
+            "Show.02x01.mkv",
+            "Show.03x05.mkv"
+        ]
+        for filename in files:
+            with open(os.path.join(self.test_dir, filename), "w") as f:
+                f.write("content")
+        
+        actions, error = get_organization_plan(self.test_dir)
+        self.assertIsNone(error)
+        self.assertIsNotNone(actions)
+        self.assertIn("Season 01", actions)
+        self.assertIn("Season 02", actions)
+        self.assertIn("Season 03", actions)
+        self.assertEqual(len(actions["Season 01"]), 2)
+        self.assertEqual(len(actions["Season 02"]), 1)
+        self.assertEqual(len(actions["Season 03"]), 1)
+
+    def test_specials_folder(self):
+        """Test that season 00 is mapped to 'Specials' folder."""
+        files = [
+            "Show.00x01.mkv",
+            "Show.00x02.mkv"
+        ]
+        for filename in files:
+            with open(os.path.join(self.test_dir, filename), "w") as f:
+                f.write("content")
+        
+        actions, error = get_organization_plan(self.test_dir)
+        self.assertIsNone(error)
+        self.assertIsNotNone(actions)
+        self.assertIn("Specials", actions)
+        self.assertEqual(len(actions["Specials"]), 2)
+
+    def test_mixed_files(self):
+        """Test that only files with season format are included."""
+        files = [
+            "Show.01x01.mkv",
+            "random.txt",
+            "Show.02x01.mp4",
+            "another_file.avi"
+        ]
+        for filename in files:
+            with open(os.path.join(self.test_dir, filename), "w") as f:
+                f.write("content")
+        
+        actions, error = get_organization_plan(self.test_dir)
+        self.assertIsNone(error)
+        self.assertIsNotNone(actions)
+        # Only 2 files should be in the actions
+        total_files = sum(len(file_list) for file_list in actions.values())
+        self.assertEqual(total_files, 2)
+
 
 class TestTVShowOrganizer(unittest.TestCase):
+    """Integration tests for the TV show organizer script."""
 
     def setUp(self):
         """Set up a temporary directory and dummy files for testing."""
