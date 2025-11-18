@@ -2,8 +2,6 @@ import os
 import re
 import shutil
 import argparse
-import tkinter as tk
-from tkinter import filedialog, messagebox
 from collections import defaultdict
 
 # --- Core Logic ---
@@ -89,6 +87,9 @@ def run_cli(args):
 
 def organize_from_gui(directory, dry_run, only_create_folders):
     """Handles the logic when the 'Organize' button is clicked in the GUI."""
+    import tkinter as tk
+    from tkinter import messagebox
+    
     if not directory:
         messagebox.showerror("Error", "Please select a directory.")
         return
@@ -143,6 +144,9 @@ def organize_from_gui(directory, dry_run, only_create_folders):
         messagebox.showerror("Error", f"An error occurred: {e}")
 
 def select_directory(entry):
+    from tkinter import filedialog
+    import tkinter as tk
+    
     folder_selected = filedialog.askdirectory()
     if folder_selected:
         entry.delete(0, tk.END)
@@ -150,6 +154,8 @@ def select_directory(entry):
 
 def run_gui():
     """Sets up and runs the Tkinter GUI."""
+    import tkinter as tk
+    
     root = tk.Tk()
     root.title("TV Show Organizer")
     root.geometry("450x200")
