@@ -5,27 +5,31 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "tv-show-organizer"
 version = "0.1.0" # This will be updated by the release workflow
-description = "A script with a GUI and CLI to automatically organize your TV show files into season-specific folders."
+description = "Automatically organize your TV show files into season-specific folders."
 readme = "README.md"
-requires-python = ">=3.6"
+requires-python = ">=3.8"
 license = { text = "MIT License" }
 authors = [
-  { name="Not A Real Person", email="example@example.com" },
+  { name="willtheorangeguy", email="willtheorangeguy@outlook.com" },
 ]
+keywords = ["tv", "television", "media", "organizer", "file-management"]
 classifiers = [
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Environment :: Win32 (MS Windows)",
     "Environment :: X11 Applications",
     "Environment :: MacOS X",
+    "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
     "Topic :: Multimedia :: Video",
     "Topic :: Utilities",
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/your-username/your-repo" # Placeholder
-"Bug Tracker" = "https://github.com/your-username/your-repo/issues" # Placeholder
+"Homepage" = "https://github.com/willtheorangeguy/create-TV-dirs"
+"Bug Tracker" = "https://github.com/willtheorangeguy/create-TV-dirs/issues"
 
 [project.scripts]
 tv-organizer = "tv_organizer.__main__:main"

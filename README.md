@@ -1,59 +1,74 @@
 # TV Show Organizer
 
-A Python script with a GUI and CLI to automatically organize your TV show files into season-specific folders.
+Automatically organize your TV show files into season-specific folders.
+
+`tv-organizer` scans a directory for video files whose names contain a
+season/episode marker (e.g. `08x01`) and sorts them into `Season 08`,
+`Season 01`, etc. Episodes from season `00` are moved into a `Specials`
+folder instead.
 
 ## Features
 
--   **GUI Mode**: An easy-to-use graphical interface for selecting a directory and organizing files.
--   **CLI Mode**: A command-line interface for automation and scripting.
--   **Season Detection**: Parses filenames to find season numbers (e.g., `S08E01`, `08x01`).
--   **"Specials" Folder**: Automatically moves episodes from "Season 00" into a `Specials` folder.
--   **Dry Run**: See what changes will be made without modifying any files.
--   **Folder Creation Only**: Create the required season folders without moving any files.
+- **CLI mode** for scripting and automation.
+- **GUI mode** (Tkinter) for point-and-click use.
+- **Season detection** via the `NNxNN` pattern (e.g. `08x01`, `01x05`).
+- **"Specials" folder**: season `00` is mapped to `Specials` instead of `Season 00`.
+- **Dry run**: preview the planned moves without touching any files.
+- **Folder-creation-only mode**: create the season folders without moving files.
 
-## Prerequisites
+## Installation
 
--   Python 3.6 or newer. No external libraries are needed.
+Requires Python 3.8+. No external dependencies.
+
+```bash
+pip install tv-show-organizer
+```
+
+This installs the `tv-organizer` command. Alternatively, install from a
+local clone:
+
+```bash
+git clone https://github.com/willtheorangeguy/create-TV-dirs.git
+cd create-TV-dirs
+pip install .
+```
 
 ## Usage
 
-### GUI Mode
-
-To launch the graphical interface, run the script without any arguments:
+### CLI mode
 
 ```bash
-python organize_tv_shows.py
+tv-organizer <directory>                     # organize files in-place
+tv-organizer <directory> --dry-run           # preview only, no changes
+tv-organizer <directory> --only-create-folders  # create season folders, don't move files
 ```
 
-1.  Click the **"Browse..."** button to select the directory containing your TV show files.
-2.  (Optional) Select one of the checkboxes:
-    -   **Dry Run**: To see a report of what files will be moved without making any changes.
-    -   **Only Create Season Folders**: To create the `Season XX` folders without moving the files.
-3.  Click the **"Organize Files"** button to start the process.
+If you haven't installed the package, you can run it directly from a
+checkout with:
 
-### Command-Line Mode
+```bash
+python -m tv_organizer <directory>
+```
 
-You can also run the script directly from the command line.
+### GUI mode
 
-**Arguments:**
+```bash
+tv-organizer --gui
+```
 
--   `directory`: (Required) The path to the directory you want to organize.
--   `--dry-run`: (Optional) Show what changes would be made without actually moving or creating anything.
--   `--only-create-folders`: (Optional) Only create the season folders; do not move files.
+1. Click **"Browse..."** to select the directory containing your TV show files.
+2. (Optional) Check **Dry Run** to preview the plan, or **Only Create Season Folders**
+   to create folders without moving files.
+3. Click **"Organize Files"**.
 
-**Examples:**
+## Development
 
--   **To organize a directory:**
-    ```bash
-    python organize_tv_shows.py "/path/to/your/tv_shows"
-    ```
+```bash
+git clone https://github.com/willtheorangeguy/create-TV-dirs.git
+cd create-TV-dirs
+python test_organizer.py -v
+```
 
--   **To perform a dry run:**
-    ```bash
-    python organize_tv_shows.py "/path/to/your/tv_shows" --dry-run
-    ```
+## License
 
--   **To only create the season folders:**
-    ```bash
-    python organize_tv_shows.py "/path/to/your/tv_shows" --only-create-folders
-    ```
+MIT — see [LICENSE](LICENSE).
