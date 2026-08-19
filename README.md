@@ -1,74 +1,73 @@
-# TV Show Organizer
+<!-- Logo -->
+<h1 align="center">TV Show Organizer</h1>
 
-Automatically organize your TV show files into season-specific folders.
+<!-- Copy -->
+<h4 align="center">Sorts a folder of TV episodes into season folders, by reading the season number out of each filename.</h4>
 
-`tv-organizer` scans a directory for video files whose names contain a
-season/episode marker (e.g. `08x01`) and sorts them into `Season 08`,
-`Season 01`, etc. Episodes from season `00` are moved into a `Specials`
-folder instead.
+<!-- Badges -->
+<div align="center">
+  <img alt="GitHub Issues" src="https://img.shields.io/github/issues/willtheorangeguy/create-TV-dirs">
+  <img alt="GitHub Pull Requests" src="https://img.shields.io/github/issues-pr/willtheorangeguy/create-TV-dirs">
+  <img alt="License" src="https://img.shields.io/github/license/willtheorangeguy/create-TV-dirs">
+</div>
 
-## Features
+<!-- Navigation -->
+<p align="center">
+  <a href="#key-features">Key Features</a> •
+  <a href="#installation">Installation</a> •
+  <a href="#usage">Usage</a> •
+  <a href="#documentation">Documentation</a> •
+  <a href="#support">Support</a> •
+  <a href="#contributing">Contributing</a> •
+  <a href="#credits">Credits</a> •
+  <a href="#license">License</a>
+</p>
 
-- **CLI mode** for scripting and automation.
-- **GUI mode** (Tkinter) for point-and-click use.
-- **Season detection** via the `NNxNN` pattern (e.g. `08x01`, `01x05`).
-- **"Specials" folder**: season `00` is mapped to `Specials` instead of `Season 00`.
-- **Dry run**: preview the planned moves without touching any files.
-- **Folder-creation-only mode**: create the season folders without moving files.
+## Key Features
+
+- Reads the `NNxNN` marker in a filename — `08x01` means season 8 — and moves the file into `Season 08`.
+- Season `00` goes to `Specials`.
+- **Dry run** prints the whole plan and changes nothing.
+- Folder-creation-only mode, if you would rather move the files yourself.
+- CLI for scripting, Tkinter GUI for clicking.
+- Python 3.8+, standard library only.
 
 ## Installation
-
-Requires Python 3.8+. No external dependencies.
 
 ```bash
 pip install tv-show-organizer
 ```
 
-This installs the `tv-organizer` command. Alternatively, install from a
-local clone:
-
-```bash
-git clone https://github.com/willtheorangeguy/create-TV-dirs.git
-cd create-TV-dirs
-pip install .
-```
+Or from a clone: `pip install .`. See [`docs/installation.md`](docs/installation.md).
 
 ## Usage
 
-### CLI mode
-
 ```bash
-tv-organizer <directory>                     # organize files in-place
-tv-organizer <directory> --dry-run           # preview only, no changes
-tv-organizer <directory> --only-create-folders  # create season folders, don't move files
+tv-organizer <directory> --dry-run              # always start here
+tv-organizer <directory>                        # move the files
+tv-organizer <directory> --only-create-folders  # folders only
+tv-organizer --gui                              # point and click
 ```
 
-If you haven't installed the package, you can run it directly from a
-checkout with:
+> **Run `--dry-run` first, every time.** Two things make that worth insisting on: a filename containing a resolution like `1920x1080` is read as season 20, and a file moved onto an existing file of the same name replaces it. Both are recorded in [`docs/internal/known-issues.md`](docs/internal/known-issues.md).
 
-```bash
-python -m tv_organizer <directory>
-```
+## Documentation
 
-### GUI mode
+Full documentation lives in [`docs/`](docs/README.md):
+[Quickstart](docs/quickstart.md) · [Installation](docs/installation.md) · [Configuration](docs/configuration.md) · [Architecture](docs/architecture.md) · [Development](docs/development.md) · [FAQ](docs/faq.md) · [Troubleshooting](docs/troubleshooting.md) · [Roadmap](docs/roadmap.md)
 
-```bash
-tv-organizer --gui
-```
+## Support
 
-1. Click **"Browse..."** to select the directory containing your TV show files.
-2. (Optional) Check **Dry Run** to preview the plan, or **Only Create Season Folders**
-   to create folders without moving files.
-3. Click **"Organize Files"**.
+Open a [GitHub Discussion](https://github.com/willtheorangeguy/create-TV-dirs/discussions/new) or file an [issue](https://github.com/willtheorangeguy/create-TV-dirs/issues/new/choose).
 
-## Development
+## Contributing
 
-```bash
-git clone https://github.com/willtheorangeguy/create-TV-dirs.git
-cd create-TV-dirs
-python test_organizer.py -v
-```
+Contributions welcome. See the org-wide [Contributing Guide](https://github.com/willtheorangeguy/.github/blob/main/CONTRIBUTING.md) and [Code of Conduct](https://github.com/willtheorangeguy/.github/blob/main/CODE_OF_CONDUCT.md).
+
+## Credits
+
+Standard library only — `os`, `re`, `shutil`, `argparse`, and Tkinter for the GUI.
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT — see [`LICENSE`](LICENSE).
