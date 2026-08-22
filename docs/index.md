@@ -3,7 +3,7 @@
 A small tool that reads a season number out of each filename and moves the file into the matching
 season folder.
 
-```
+```text
 create-TV-dirs/
 ├── tv_organizer/
 │   ├── __init__.py     package marker

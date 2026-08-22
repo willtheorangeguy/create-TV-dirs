@@ -50,7 +50,7 @@ No install needed.
 
 The filename must contain `NNxNN` — two digits, an `x`, two digits:
 
-```
+```text
 The.Show.08x01.Episode.Name.mkv   → Season 08
 The.Show.00x03.Christmas.mkv      → Specials
 The.Show.S01E05.mkv               → not matched, left alone

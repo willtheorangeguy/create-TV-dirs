@@ -2,7 +2,7 @@
 
 One module, 241 lines, three parts: a planner, a CLI, and a GUI.
 
-```
+```text
 get_organization_plan(directory)   →  {folder: [filenames]}
         ├── run_cli(args)          →  print, or create, or move
         └── organize_from_gui(...) →  the same, in dialogs
