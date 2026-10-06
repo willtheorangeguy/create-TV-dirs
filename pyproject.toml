@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tv-show-organizer"
-version = "0.1.0" # This will be updated by the release workflow
+version = "1.0.0"
 description = "Automatically organize your TV show files into season-specific folders."
 readme = "README.md"
 requires-python = ">=3.8"
@@ -33,3 +33,6 @@ classifiers = [
 
 [project.scripts]
 tv-organizer = "tv_organizer.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["tv_organizer*"]

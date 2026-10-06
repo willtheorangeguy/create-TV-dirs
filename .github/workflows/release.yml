@@ -20,7 +20,25 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v7
       with:
-        python-version: "3.9"
+        python-version: "3.12"
+
+    - name: Verify release version
+      env:
+        RELEASE_TAG: ${{ github.event.release.tag_name }}
+      run: |
+        python - <<'PY'
+        import os
+        import tomllib
+        from pathlib import Path
+
+        version = tomllib.loads(Path("pyproject.toml").read_text())["project"]["version"]
+        tag = os.environ["RELEASE_TAG"]
+        if tag != f"v{version}":
+            raise SystemExit(f"Release tag {tag!r} does not match package version {version!r}")
+        PY
+
+    - name: Run tests
+      run: python test_organizer.py -v
 
     - name: Install build dependencies
       run: python -m pip install build
@@ -30,8 +48,6 @@ jobs:
 
     - name: Publish package to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
-      with:
-        skip_existing: true
 
   docker-publish:
     name: Build and publish Docker image to Docker Hub
