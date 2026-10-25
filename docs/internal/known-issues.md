@@ -33,7 +33,9 @@ which also covers deliberate non-goals.
 
 **Suggested fix:** Check `os.path.exists(destination_path)` before moving and skip with a warning, or move to a de-duplicated name. Report skipped collisions in the summary so a partial run is visible. The dry run should flag planned collisions too, since that is where a user would want to find out.
 
-## 3. Files that do not match are skipped silently and are not reported
+## 3. Files that do not match are skipped silently and are not reported — RESOLVED
+
+**Resolution:** List unmatched regular files in CLI output and show them in a GUI warning before organizing.
 
 **Severity:** Medium
 **Where:** `tv_organizer/__main__.py` -> `get_organization_plan`, `run_cli`
