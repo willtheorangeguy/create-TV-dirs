@@ -44,7 +44,9 @@ which also covers deliberate non-goals.
 
 **Suggested fix:** Count non-matching files in the plan and report them: 'organized 42 files, skipped 18 with no season marker'. Listing the skipped names under `--dry-run` would make the gap obvious at the point it matters.
 
-## 4. Only NNxNN is recognised, not the commoner SNNENN form
+## 4. Only NNxNN is recognised, not the commoner SNNENN form — RESOLVED
+
+**Resolution:** Recognize case-insensitive SNNENN names alongside NNxNN, including season 00 specials.
 
 **Severity:** Low
 **Where:** `tv_organizer/__main__.py` -> `season_pattern`

@@ -53,6 +53,15 @@ class TestGetOrganizationPlan(unittest.TestCase):
         self.assertIsNone(error)
         self.assertEqual(dict(actions), {"Season 02": ["Show.1920x1080.02x03.mkv"]})
 
+    def test_snnenn_season_tokens_and_specials(self):
+        for filename in ["Show.S02E03.mkv", "Show.s02e04.mkv", "Show.S00E01.mkv"]:
+            with open(os.path.join(self.test_dir, filename), "w") as file:
+                file.write("content")
+        actions, error = get_organization_plan(self.test_dir)
+        self.assertIsNone(error)
+        self.assertEqual(set(actions["Season 02"]), {"Show.S02E03.mkv", "Show.s02e04.mkv"})
+        self.assertEqual(actions["Specials"], ["Show.S00E01.mkv"])
+
     def test_single_season(self):
         """Test organizing files from a single season."""
         files = [

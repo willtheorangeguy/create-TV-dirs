@@ -15,18 +15,18 @@ def get_organization_plan(directory):
     if not files:
         return None, "No files to organize in the selected directory."
 
-    season_pattern = re.compile(r'(?<![A-Za-z0-9])(\d{2})x\d{2}(?![A-Za-z0-9])')
+    season_pattern = re.compile(r'(?<![A-Za-z0-9])(?:(\d{2})x\d{2}|s(\d{2})e\d{2})(?![A-Za-z0-9])', re.IGNORECASE)
     actions = defaultdict(list)
     
     for filename in files:
         match = season_pattern.search(filename)
         if match:
-            season_number = match.group(1)
+            season_number = match.group(1) or match.group(2)
             folder_name = "Specials" if season_number == "00" else f"Season {season_number}"
             actions[folder_name].append(filename)
 
     if not actions:
-        return None, "No files with the expected season format (e.g., '08x01') were found."
+        return None, "No files with the expected season format (e.g., '08x01' or 'S08E01') were found."
         
     return actions, None
 
