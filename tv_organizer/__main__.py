@@ -4,6 +4,21 @@ import shutil
 import argparse
 from collections import defaultdict
 
+def move_without_overwrite(source, destination):
+    """Copy exclusively before removing the source, preserving existing files."""
+    with open(source, "rb") as source_file:
+        with open(destination, "xb") as destination_file:
+            try:
+                shutil.copyfileobj(source_file, destination_file)
+            except BaseException:
+                # Keep the original if a copy fails (for example, a full disk).
+                destination_file.close()
+                os.unlink(destination)
+                raise
+    shutil.copystat(source, destination)
+    os.unlink(source)
+
+
 # --- Core Logic ---
 
 def get_organization_plan(directory):
@@ -77,7 +92,7 @@ def run_cli(args):
         for filename in file_list:
             source_path = os.path.join(args.directory, filename)
             destination_path = os.path.join(season_folder_path, filename)
-            shutil.move(source_path, destination_path)
+            move_without_overwrite(source_path, destination_path)
             organized_count += 1
             print(f"Moved: {filename} -> {folder_name}/")
     
@@ -135,7 +150,7 @@ def organize_from_gui(directory, dry_run, only_create_folders):
             for filename in file_list:
                 source_path = os.path.join(directory, filename)
                 destination_path = os.path.join(season_folder_path, filename)
-                shutil.move(source_path, destination_path)
+                move_without_overwrite(source_path, destination_path)
                 organized_count += 1
         
         messagebox.showinfo("Success", f"Successfully organized {organized_count} files.")
