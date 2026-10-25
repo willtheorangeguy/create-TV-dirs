@@ -191,6 +191,13 @@ class TestTVShowOrganizer(unittest.TestCase):
         self.assertTrue(os.path.exists(os.path.join(self.test_dir, "unrelated_file.txt")))
         self.assertTrue(os.path.exists(os.path.join(self.test_dir, "documentary.avi")))
 
+    def test_mixed_files_are_reported(self):
+        result = self.run_script([self.test_dir, "--dry-run"])
+        self.assertEqual(result.returncode, 0)
+        self.assertIn("Skipped 2 file(s)", result.stdout)
+        self.assertIn("unrelated_file.txt", result.stdout)
+        self.assertIn("documentary.avi", result.stdout)
+
     def test_dry_run(self):
         """Test the --dry-run flag to ensure no changes are made."""
         result = self.run_script([self.test_dir, "--dry-run"])

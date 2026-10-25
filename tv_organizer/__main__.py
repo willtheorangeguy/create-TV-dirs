@@ -30,6 +30,13 @@ def get_organization_plan(directory):
         
     return actions, None
 
+def unmatched_files(directory, actions):
+    """Return regular files absent from the organization plan."""
+    planned = {name for names in actions.values() for name in names}
+    return sorted(name for name in os.listdir(directory)
+                  if os.path.isfile(os.path.join(directory, name)) and name not in planned)
+
+
 # --- CLI Implementation ---
 
 def run_cli(args):
@@ -43,6 +50,12 @@ def run_cli(args):
     if error:
         print(error)
         return
+
+    skipped = unmatched_files(args.directory, actions)
+    if skipped:
+        print(f"Skipped {len(skipped)} file(s) without a season marker:")
+        for filename in skipped:
+            print(f"  - {filename}")
 
     if args.dry_run:
         print("--- Dry Run Report ---")
@@ -99,6 +112,10 @@ def organize_from_gui(directory, dry_run, only_create_folders):
         if error:
             messagebox.showinfo("Information", error)
             return
+
+        skipped = unmatched_files(directory, actions)
+        if skipped:
+            messagebox.showwarning("Skipped files", "No season marker found in:\n" + "\n".join(skipped))
 
         if dry_run:
             report = "Dry Run Report:\n\nThe following actions would be taken:\n\n"
