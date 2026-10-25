@@ -15,7 +15,7 @@ def get_organization_plan(directory):
     if not files:
         return None, "No files to organize in the selected directory."
 
-    season_pattern = re.compile(r'(\d{2})x\d{2}')
+    season_pattern = re.compile(r'(?<![A-Za-z0-9])(\d{2})x\d{2}(?![A-Za-z0-9])')
     actions = defaultdict(list)
     
     for filename in files:
