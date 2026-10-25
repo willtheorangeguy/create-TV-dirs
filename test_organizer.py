@@ -45,6 +45,14 @@ class TestGetOrganizationPlan(unittest.TestCase):
         self.assertIsNone(actions)
         self.assertIn("No files with the expected season format", error)
 
+    def test_resolution_digits_do_not_become_a_season(self):
+        for filename in ["Show.1920x1080.02x03.mkv", "Film.1920x1080.mkv"]:
+            with open(os.path.join(self.test_dir, filename), "w") as file:
+                file.write("content")
+        actions, error = get_organization_plan(self.test_dir)
+        self.assertIsNone(error)
+        self.assertEqual(dict(actions), {"Season 02": ["Show.1920x1080.02x03.mkv"]})
+
     def test_single_season(self):
         """Test organizing files from a single season."""
         files = [
