@@ -20,7 +20,9 @@ which also covers deliberate non-goals.
 
 **Suggested fix:** Require a separator or word boundary before the match -- `(?&lt;![\dx])(\d{2})x(\d{2})(?![\dx])` rejects both resolutions while still accepting `Show.08x01.mkv`. Add the two resolution cases to `test_organizer.py`; `get_organization_plan` is pure, so a case is a filename and an expected mapping.
 
-## 2. Moving a file onto an existing file of the same name replaces it silently
+## 2. Moving a file onto an existing file of the same name replaces it silently — RESOLVED
+
+**Resolution:** Both CLI and GUI create destination files exclusively and retain the original if copying fails. Existing files are never replaced.
 
 **Severity:** High
 **Where:** `tv_organizer/__main__.py` -> `run_cli`, `organize_from_gui`
