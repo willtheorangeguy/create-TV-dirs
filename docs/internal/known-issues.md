@@ -9,7 +9,9 @@ which also covers deliberate non-goals.
 
 **4 open:** 2 high, 1 medium, 1 low.
 
-## 1. A resolution in the filename is matched as a season number
+## 1. A resolution in the filename is matched as a season number — RESOLVED
+
+**Resolution:** Require token boundaries around NNxNN so resolution strings such as 1920x1080 cannot be read as season markers.
 
 **Severity:** High
 **Where:** `tv_organizer/__main__.py` -> `get_organization_plan`, `season_pattern`
